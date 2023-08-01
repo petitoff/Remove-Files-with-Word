@@ -13,6 +13,9 @@ def remove_files_with_word(word, path="."):
     Returns:
         list: List of removed files.
     """
+    if not os.path.isdir(path):
+        raise ValueError(f"The provided path '{path}' is not a valid directory.")
+
     files = os.listdir(path)
     deleted_files = []
 
@@ -34,7 +37,7 @@ if __name__ == "__main__":
     else:
         word = sys.argv[1]
         path = " ".join(sys.argv[2:])
-        if os.path.isdir(path):
+        try:
             deleted_files = remove_files_with_word(word, path)
             if deleted_files:
                 print(f"Removed files with '{word}' in the name:")
@@ -42,5 +45,5 @@ if __name__ == "__main__":
                     print(f" - {deleted_file}")
             else:
                 print(f"No files found with '{word}' in the name.")
-        else:
-            print(f"The provided path '{path}' is not a valid directory.")
+        except ValueError as e:
+            print(f"Error: {str(e)}")
